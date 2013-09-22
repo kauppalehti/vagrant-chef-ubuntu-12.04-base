@@ -5,8 +5,18 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "precise32"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  config.vm.define :nodejs do |t|
+  end
+
+  config.vm.network :forwarded_port, guest: 9000, host: 9000
+
+  config.vm.provider :virtualbox do |vb|
+    vb.name = "nodejs"
+    vb.customize ["modifyvm", :id, "--cpus", "1", "--memory", 512]
+  end
+
+  config.vm.box = "opscode-ubuntu-12.04-chef11"
+  config.vm.box_url = "https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.0.box"
 
   config.berkshelf.enabled = true
   
@@ -20,11 +30,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "git"
     chef.add_recipe "vim"
     chef.add_recipe "curl"
+    chef.add_recipe "nodejs"
       
     chef.json = {
       :locales => {
         :available => "fi_FI.utf8",
         :default => "fi_FI.utf8"
+      },
+      :nodejs => {
+        :install_method => "package",
+        :version => "0.10.18"
       }
     }
   end
