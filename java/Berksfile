@@ -1,0 +1,7 @@
+cookbook "apt"
+cookbook "git"
+cookbook "locales"
+cookbook "vim"
+cookbook "curl"	
+cookbook "java"
+cookbook "maven", git: "git://github.com:niilo/maven.git"

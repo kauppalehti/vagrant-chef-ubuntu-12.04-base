@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.define :java6 do |t|
+  end
+
+  config.vm.network :forwarded_port, guest: 6100, host: 6100
+
+  config.vm.provider :virtualbox do |vb|
+  	vb.name = "java6"
+    vb.customize ["modifyvm", :id, "--cpus", "2", "--memory", 3072]
+  end
+
+  config.vm.box = "opscode-ubuntu-12.04-chef11"
+  config.vm.box_url = "https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.0.box"
+
+  config.berkshelf.enabled = true
+  
+  config.vm.provision :shell, :inline => "sudo apt-get update -y"
+  config.vm.provision :shell, :inline => "sudo locale-gen fi_FI.UTF-8"
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.log_level = :debug
+    chef.add_recipe "apt"
+    chef.add_recipe "locales"
+    chef.add_recipe "git"
+    chef.add_recipe "vim"
+    chef.add_recipe "curl"
+    chef.add_recipe "java"
+    chef.add_recipe "maven"
+      
+    chef.json = {
+      :locales => {
+        :available => "fi_FI.utf8",
+        :default => "fi_FI.utf8"
+      },
+      :java => {
+        :install_flavor => "oracle",
+        :jdk_version => "6",
+        :oracle => {
+          "accept_oracle_download_terms" => true
+        }
+      },
+      :maven => {
+        :version => "3"
+      }
+    }
+  end
+
+end
