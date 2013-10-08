@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.hostname = "mongodb"
+
+  config.vm.define :mongodb do |t|
+  end
+  
+  config.vm.synced_folder "/work/code", "/app/"
+  
+  config.vm.network "private_network", ip: "192.168.50.100"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.name = "mongodb"
+    vb.customize ["modifyvm", :id, "--cpus", "2", "--memory", 512]
+  end
+
+  config.vm.box = "opscode-ubuntu-12.04-chef11"
+  config.vm.box_url = "https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.0.box"
+
+  config.berkshelf.enabled = true
+  
+  config.vm.provision :shell, :inline => "sudo apt-get update -y"
+  config.vm.provision :shell, :inline => "sudo locale-gen fi_FI.UTF-8"
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.add_recipe "apt"
+    chef.add_recipe "locales"
+    chef.add_recipe "git"
+    chef.add_recipe "vim"
+    chef.add_recipe "curl"
+	chef.add_recipe "mongodb-10gen"
+  
+    chef.json = {
+      :locales => {
+        :available => "fi_FI.utf8",
+        :default => "fi_FI.utf8"
+      }
+    }
+
+  end
+  
+  config.vm.provision :shell, :inline => "sh /vagrant/create-mongo-replica-set.sh"
+
+end
