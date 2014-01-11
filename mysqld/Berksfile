@@ -1,0 +1,6 @@
+cookbook "apt"
+cookbook "locales"
+cookbook "vim"
+cookbook "openssl"
+cookbook "homebrew"
+cookbook "mysql"
