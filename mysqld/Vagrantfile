@@ -88,7 +88,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.berkshelf.enabled = true
 
   config.vm.provision :shell, :inline => "sudo apt-get update -y"
-  config.vm.provision :shell, :inline => "sudo apt-get upgrade -y"
+#  config.vm.provision :shell, :inline => "sudo apt-get upgrade -y"
   config.vm.provision :shell, :inline => "sudo locale-gen fi_FI.UTF-8"
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
