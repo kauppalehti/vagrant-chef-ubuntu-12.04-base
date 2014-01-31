@@ -111,6 +111,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :shell, :inline => "sudo apt-get update -y"
+  config.vm.provision :shell, :inline => "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' dist-upgrade"
   config.vm.provision :shell, :inline => "sudo locale-gen fi_FI.UTF-8"
 
   #   chef.cookbooks_path = "../my-recipes/cookbooks"
