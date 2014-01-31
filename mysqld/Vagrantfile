@@ -100,7 +100,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "locales"
     chef.add_recipe "vim"
     chef.add_recipe "openssl"
-#    chef.add_recipe "homebrew"
     chef.add_recipe "mysql"
 
     chef.json = {
