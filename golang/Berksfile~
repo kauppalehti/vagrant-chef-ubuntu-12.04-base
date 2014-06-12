@@ -1,6 +1,0 @@
-cookbook "apt"
-cookbook "git"
-cookbook "locales"
-cookbook "vim"
-cookbook "curl"
-cookbook "nodejs"
