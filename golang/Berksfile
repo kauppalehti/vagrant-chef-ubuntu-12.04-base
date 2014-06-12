@@ -1,0 +1,5 @@
+cookbook "apt"
+cookbook "git"
+cookbook "locales"
+cookbook "vim"
+cookbook "golang"
